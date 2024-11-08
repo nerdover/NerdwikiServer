@@ -1,0 +1,3 @@
+@echo off
+echo Starting Nerdwiki service...
+dotnet watch run --launch-profile https

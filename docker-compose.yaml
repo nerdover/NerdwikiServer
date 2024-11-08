@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  nerdwikidb:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: nerdwiki-db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Ss123!@#
+      - MSSQL_PID=Express
+    ports:
+      - "4201:1433"
+    volumes:
+      - nerdwiki_db_vol:/var/opt/mssql
+    networks:
+      - backend
+
+volumes:
+  nerdwiki_db_vol:
+
+
+networks:
+  backend:
+    driver: bridge
