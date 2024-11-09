@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using NerdwikiServer.Services.Interfaces;
 
 namespace NerdwikiServer.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class AuthController(
@@ -29,6 +31,7 @@ public class AuthController(
     public record SignUpRequest(string Username, string Email, string Password);
     public record SignInRequest(string Username, string Password);
 
+    [AllowAnonymous]
     [HttpPost("signUp")]
     public async Task<IActionResult> AuthSignUp(SignUpRequest request)
     {
@@ -53,6 +56,7 @@ public class AuthController(
         );
     }
 
+    [AllowAnonymous]
     [HttpPost("signIn")]
     public async Task<IActionResult> AuthSignIn(SignInRequest request)
     {

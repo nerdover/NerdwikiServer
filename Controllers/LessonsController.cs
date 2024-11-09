@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NerdwikiServer.Data.Base;
 using NerdwikiServer.Data.Entities;
@@ -83,6 +84,7 @@ public class LessonsController(ILessonRepository lessonRepository, ICategoryRepo
         }
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Lesson>>> GetLessons()
     {
@@ -98,6 +100,7 @@ public class LessonsController(ILessonRepository lessonRepository, ICategoryRepo
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<Lesson>> GetLessonById(string id)
     {
@@ -123,6 +126,7 @@ public class LessonsController(ILessonRepository lessonRepository, ICategoryRepo
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("category/{categoryId}")]
     public async Task<ActionResult<IEnumerable<Lesson>>> GetLessonsByCategoryId(string categoryId)
     {

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NerdwikiServer.Data.Base;
 using NerdwikiServer.Data.Entities;
@@ -6,6 +7,7 @@ using NerdwikiServer.Repositories.Interfaces;
 
 namespace NerdwikiServer.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class CategoriesController(ICategoryRepository categoryRepository) : ControllerBase
@@ -81,6 +83,7 @@ public class CategoriesController(ICategoryRepository categoryRepository) : Cont
         }
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
     {
@@ -96,6 +99,7 @@ public class CategoriesController(ICategoryRepository categoryRepository) : Cont
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<Category>> GetCategoryById(string id)
     {

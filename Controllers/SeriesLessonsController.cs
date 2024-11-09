@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NerdwikiServer.Data.Base;
 using NerdwikiServer.Data.Entities;
@@ -6,6 +7,7 @@ using NerdwikiServer.Repositories.Interfaces;
 
 namespace NerdwikiServer.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class SeriesLessonsController(ISeriesLessonRepository seriesLessonRepository, ISeriesRepository seriesRepository, ICategoryRepository categoryRepository) : ControllerBase
@@ -85,6 +87,7 @@ public class SeriesLessonsController(ISeriesLessonRepository seriesLessonReposit
         }
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SeriesLesson>>> GetSeriesLessons()
     {
@@ -100,6 +103,7 @@ public class SeriesLessonsController(ISeriesLessonRepository seriesLessonReposit
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<SeriesLesson>> GetSeriesLessonsById(string id)
     {
@@ -125,6 +129,7 @@ public class SeriesLessonsController(ISeriesLessonRepository seriesLessonReposit
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("series/{seriesId}")]
     public async Task<ActionResult<IEnumerable<SeriesLesson>>> GetSeriesLessonsBySeriesId(string seriesId)
     {
@@ -152,6 +157,7 @@ public class SeriesLessonsController(ISeriesLessonRepository seriesLessonReposit
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("category/{categoryId}")]
     public async Task<ActionResult<IEnumerable<SeriesLesson>>> GetSeriesLessonsByCategoryId(string categoryId)
     {
