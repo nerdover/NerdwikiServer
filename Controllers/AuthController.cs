@@ -13,7 +13,7 @@ namespace NerdwikiServer.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class AuthController(
     UserManager<IdentityUser> userManager,
     SignInManager<IdentityUser> signInManager,
@@ -115,6 +115,7 @@ public class AuthController(
         return NoContent();
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public IActionResult GetAuthenticationStatus()
     {
@@ -122,11 +123,16 @@ public class AuthController(
         return Ok(new ServerResponse { Success = status, Message = status ? "Authenticated" : "Not Authenticated" });
     }
 
+    [AllowAnonymous]
     [HttpPost("refresh")]
     public async Task<IActionResult> RefreshToken()
     {
         // Step : Get Refresh Token from Cookie
         var refreshToken = HttpContext.Request.Cookies["refreshToken"];
+
+        if  (refreshToken is null) {
+            return Unauthorized();
+        }
 
         // Step : Get Refresh Token from Server Storage
         var userToken = await _context.UserTokens.FirstOrDefaultAsync(ut => ut.Value == refreshToken);

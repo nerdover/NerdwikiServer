@@ -9,7 +9,7 @@ namespace NerdwikiServer.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class SeriesController(ISeriesRepository seriesRepository, ICategoryRepository categoryRepository) : ControllerBase
 {
     private readonly ISeriesRepository _seriesRepository = seriesRepository;

@@ -8,7 +8,7 @@ using NerdwikiServer.Repositories.Interfaces;
 namespace NerdwikiServer.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class LessonsController(ILessonRepository lessonRepository, ICategoryRepository categoryRepository) : ControllerBase
 {
     private readonly ILessonRepository _lessonRepository = lessonRepository;
