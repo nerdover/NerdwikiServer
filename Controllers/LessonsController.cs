@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NerdwikiServer.Data.Base;
 using NerdwikiServer.Data.Entities;
+using NerdwikiServer.Data.Represents;
 using NerdwikiServer.Dtos;
 using NerdwikiServer.Repositories.Interfaces;
 
@@ -86,13 +87,25 @@ public class LessonsController(ILessonRepository lessonRepository, ICategoryRepo
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Lesson>>> GetLessons()
+    public async Task<ActionResult<IEnumerable<LessonRepresent>>> GetLessons()
     {
         try
         {
             var lessons = await _lessonRepository.GetAll();
 
-            return Ok(new ServerResponse<IEnumerable<Lesson>>() { Success = true, Data = lessons });
+            var projections = lessons.Select(l => new LessonRepresent()
+            {
+                Id = l.Id,
+                Title = l.Title,
+                Cover = l.Cover,
+                Hex = l.Hex,
+                CategoryId = l.CategoryId,
+                CategoryTitle = l.Category.Title,
+                CreatedAt = l.CreatedAt,
+                UpdatedAt = l.UpdatedAt,
+            });
+
+            return Ok(new ServerResponse<IEnumerable<LessonRepresent>>() { Success = true, Data = projections });
         }
         catch (Exception e)
         {
@@ -102,7 +115,7 @@ public class LessonsController(ILessonRepository lessonRepository, ICategoryRepo
 
     [AllowAnonymous]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Lesson>> GetLessonById(string id)
+    public async Task<ActionResult<LessonRepresent>> GetLessonById(string id)
     {
         try
         {
@@ -118,7 +131,19 @@ public class LessonsController(ILessonRepository lessonRepository, ICategoryRepo
                 return NotFound(new ServerResponse { Success = false, Message = "Lesson does not exist" });
             }
 
-            return Ok(new ServerResponse<Lesson>() { Success = true, Data = lesson });
+            LessonRepresent projections = new()
+            {
+                Id = lesson.Id,
+                Title = lesson.Title,
+                Cover = lesson.Cover,
+                Hex = lesson.Hex,
+                CategoryId = lesson.CategoryId,
+                CategoryTitle = lesson.Category.Title,
+                CreatedAt = lesson.CreatedAt,
+                UpdatedAt = lesson.UpdatedAt,
+            };
+
+            return Ok(new ServerResponse<LessonRepresent>() { Success = true, Data = projections });
         }
         catch (Exception e)
         {

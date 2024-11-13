@@ -45,7 +45,7 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
 
             entity.HasOne(d => d.Category).WithMany(p => p.Lessons)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Lesson_ToCategory");
         });
 
@@ -63,7 +63,7 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
 
             entity.HasOne(d => d.Category).WithMany(p => p.Series)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Series_ToCategory");
         });
 
@@ -84,12 +84,12 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
 
             entity.HasOne(d => d.Category).WithMany(p => p.SeriesLessons)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("FK_SeriesLesson_ToCategory");
 
             entity.HasOne(d => d.Series).WithMany(p => p.SeriesLessons)
                 .HasForeignKey(d => d.SeriesId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_SeriesLesson_ToSeries");
         });
 

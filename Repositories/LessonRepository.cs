@@ -23,17 +23,27 @@ public class LessonRepository(ApplicationDbContext context) : ILessonRepository
 
     public async Task<IEnumerable<Lesson>> GetAll()
     {
-        return await _context.Lessons.AsNoTracking().ToListAsync();
+        return await _context.Lessons
+            .AsNoTracking()
+            .Include(l => l.Category)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Lesson>> GetByCategoryId(string categoryId)
     {
-        return await _context.Lessons.AsNoTracking().Where(l => l.CategoryId == categoryId).ToListAsync();
+        return await _context.Lessons
+            .AsNoTracking()
+            .Include(l => l.Category)
+            .Where(l => l.CategoryId == categoryId)
+            .ToListAsync();
     }
 
     public async Task<Lesson?> GetById(string id)
     {
-        return await _context.Lessons.AsNoTracking().SingleOrDefaultAsync(l => l.Id == id);
+        return await _context.Lessons
+            .AsNoTracking()
+            .Include(l => l.Category)
+            .SingleOrDefaultAsync(l => l.Id == id);
     }
 
     public async Task Update(Lesson entity)

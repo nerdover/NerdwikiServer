@@ -12,8 +12,8 @@ using NerdwikiServer.Data;
 namespace NerdwikiServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241108044731_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241112090109_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -437,6 +437,7 @@ namespace NerdwikiServer.Migrations
                     b.HasOne("NerdwikiServer.Data.Entities.Category", "Category")
                         .WithMany("Lessons")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Lesson_ToCategory");
 
@@ -448,6 +449,7 @@ namespace NerdwikiServer.Migrations
                     b.HasOne("NerdwikiServer.Data.Entities.Category", "Category")
                         .WithMany("Series")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Series_ToCategory");
 
@@ -459,12 +461,14 @@ namespace NerdwikiServer.Migrations
                     b.HasOne("NerdwikiServer.Data.Entities.Category", "Category")
                         .WithMany("SeriesLessons")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_SeriesLesson_ToCategory");
 
                     b.HasOne("NerdwikiServer.Data.Entities.Series", "Series")
                         .WithMany("SeriesLessons")
                         .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_SeriesLesson_ToSeries");
 

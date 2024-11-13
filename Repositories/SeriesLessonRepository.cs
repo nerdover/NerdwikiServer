@@ -23,26 +23,38 @@ public class SeriesLessonRepository(ApplicationDbContext context) : ISeriesLesso
 
     public async Task<IEnumerable<SeriesLesson>> GetAll()
     {
-        return await _context.SeriesLessons.AsNoTracking().ToListAsync();
+        return await _context.SeriesLessons
+            .AsNoTracking()
+            .Include(sl => sl.Category)
+            .Include(sl => sl.Series)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<SeriesLesson>> GetByCategoryId(string categoryId)
     {
         return await _context.SeriesLessons
             .AsNoTracking()
+            .Include(sl => sl.Category)
+            .Include(sl => sl.Series)
             .Where(x => x.CategoryId == categoryId)
             .ToListAsync();
     }
 
     public async Task<SeriesLesson?> GetById(string id)
     {
-        return await _context.SeriesLessons.AsNoTracking().SingleOrDefaultAsync(l => l.Id == id);
+        return await _context.SeriesLessons
+            .AsNoTracking()
+            .Include(sl => sl.Category)
+            .Include(sl => sl.Series)
+            .SingleOrDefaultAsync(l => l.Id == id);
     }
 
     public async Task<IEnumerable<SeriesLesson>> GetBySeriesId(string seriesId)
     {
         return await _context.SeriesLessons
             .AsNoTracking()
+            .Include(sl => sl.Category)
+            .Include(sl => sl.Series)
             .Where(x => x.SeriesId == seriesId)
             .ToListAsync();
     }

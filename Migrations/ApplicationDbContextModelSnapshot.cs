@@ -434,6 +434,7 @@ namespace NerdwikiServer.Migrations
                     b.HasOne("NerdwikiServer.Data.Entities.Category", "Category")
                         .WithMany("Lessons")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Lesson_ToCategory");
 
@@ -445,6 +446,7 @@ namespace NerdwikiServer.Migrations
                     b.HasOne("NerdwikiServer.Data.Entities.Category", "Category")
                         .WithMany("Series")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Series_ToCategory");
 
@@ -456,12 +458,14 @@ namespace NerdwikiServer.Migrations
                     b.HasOne("NerdwikiServer.Data.Entities.Category", "Category")
                         .WithMany("SeriesLessons")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_SeriesLesson_ToCategory");
 
                     b.HasOne("NerdwikiServer.Data.Entities.Series", "Series")
                         .WithMany("SeriesLessons")
                         .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_SeriesLesson_ToSeries");
 

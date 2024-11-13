@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NerdwikiServer.Data.Base;
 using NerdwikiServer.Data.Entities;
+using NerdwikiServer.Data.Represents;
 using NerdwikiServer.Dtos;
 using NerdwikiServer.Repositories.Interfaces;
 
@@ -89,13 +90,28 @@ public class SeriesLessonsController(ISeriesLessonRepository seriesLessonReposit
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SeriesLesson>>> GetSeriesLessons()
+    public async Task<ActionResult<IEnumerable<SeriesLessonRepresent>>> GetSeriesLessons()
     {
         try
         {
             var seriesLessons = await _seriesLessonRepository.GetAll();
 
-            return Ok(new ServerResponse<IEnumerable<SeriesLesson>>() { Success = true, Data = seriesLessons });
+            var projections = seriesLessons.Select(sl => new SeriesLessonRepresent()
+            {
+                Id = sl.Id,
+                Title = sl.Title,
+                Cover = sl.Cover,
+                Hex = sl.Hex,
+                CategoryId = sl.CategoryId,
+                CategoryTitle = sl.Category.Title,
+                SeriesId = sl.SeriesId,
+                SeriesTitle = sl.Series.Title,
+                Content = sl.Content,
+                CreatedAt = sl.CreatedAt,
+                UpdatedAt = sl.UpdatedAt,
+            });
+
+            return Ok(new ServerResponse<IEnumerable<SeriesLessonRepresent>>() { Success = true, Data = projections });
         }
         catch (Exception e)
         {
