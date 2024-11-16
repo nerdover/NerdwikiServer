@@ -115,13 +115,20 @@ public class LessonsController(ILessonRepository lessonRepository, ICategoryRepo
 
     [AllowAnonymous]
     [HttpGet("{id}")]
-    public async Task<ActionResult<LessonRepresent>> GetLessonById(string id)
+    public async Task<ActionResult<LessonRepresent>> GetLessonById(string id, string categoryId)
     {
         try
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(categoryId))
             {
                 return BadRequest(new ServerResponse { Success = false, Message = "Id is required" });
+            }
+
+            var category = await _categoryRepository.GetById(categoryId);
+
+            if (category is null)
+            {
+                return NotFound(new ServerResponse { Success = false, Message = "Category does not exist" });
             }
 
             var lesson = await _lessonRepository.GetById(id);

@@ -121,13 +121,27 @@ public class SeriesLessonsController(ISeriesLessonRepository seriesLessonReposit
 
     [AllowAnonymous]
     [HttpGet("{id}")]
-    public async Task<ActionResult<SeriesLesson>> GetSeriesLessonsById(string id)
+    public async Task<ActionResult<SeriesLesson>> GetSeriesLessonsById(string id, string seriesId, string categoryId)
     {
         try
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(seriesId) || string.IsNullOrEmpty(categoryId))
             {
                 return BadRequest(new ServerResponse { Success = false, Message = "Id is required" });
+            }
+
+            var category = _categoryRepository.GetById(categoryId);
+
+            if (category is null)
+            {
+                return NotFound(new ServerResponse { Success = false, Message = "Category does not exist" });
+            }
+
+            var series = await _seriesRepository.GetById(seriesId);
+
+            if (series is null)
+            {
+                return NotFound(new ServerResponse { Success = false, Message = "Series does not exist" });
             }
 
             var seriesLesson = await _seriesLessonRepository.GetById(id);
@@ -147,13 +161,20 @@ public class SeriesLessonsController(ISeriesLessonRepository seriesLessonReposit
 
     [AllowAnonymous]
     [HttpGet("series/{seriesId}")]
-    public async Task<ActionResult<IEnumerable<SeriesLesson>>> GetSeriesLessonsBySeriesId(string seriesId)
+    public async Task<ActionResult<IEnumerable<SeriesLesson>>> GetSeriesLessonsBySeriesId(string seriesId, string categoryId)
     {
         try
         {
-            if (string.IsNullOrEmpty(seriesId))
+            if (string.IsNullOrEmpty(seriesId) || string.IsNullOrEmpty(categoryId))
             {
-                return BadRequest(new ServerResponse { Success = false, Message = "Series is required" });
+                return BadRequest(new ServerResponse { Success = false, Message = "Series and Category is required" });
+            }
+
+            var category = await _categoryRepository.GetById(categoryId);
+
+            if (category is null)
+            {
+                return NotFound(new ServerResponse { Success = false, Message = "Category does not exist" });
             }
 
             var series = await _seriesRepository.GetById(seriesId);
