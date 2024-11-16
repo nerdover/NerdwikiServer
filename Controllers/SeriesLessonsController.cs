@@ -130,7 +130,7 @@ public class SeriesLessonsController(ISeriesLessonRepository seriesLessonReposit
                 return BadRequest(new ServerResponse { Success = false, Message = "Id is required" });
             }
 
-            var category = _categoryRepository.GetById(categoryId);
+            var category = await _categoryRepository.GetById(categoryId);
 
             if (category is null)
             {
