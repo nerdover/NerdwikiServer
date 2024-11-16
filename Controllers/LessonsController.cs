@@ -137,6 +137,7 @@ public class LessonsController(ILessonRepository lessonRepository, ICategoryRepo
                 Title = lesson.Title,
                 Cover = lesson.Cover,
                 Hex = lesson.Hex,
+                Content = lesson.Content,
                 CategoryId = lesson.CategoryId,
                 CategoryTitle = lesson.Category.Title,
                 CreatedAt = lesson.CreatedAt,

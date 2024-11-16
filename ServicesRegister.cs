@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NerdwikiServer.Data;
@@ -29,7 +30,7 @@ public static class ServicesRegister
 
         // Configure JWT authentication
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
-        services.AddAuthentication(options => 
+        services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -56,5 +57,6 @@ public static class ServicesRegister
 
         // Register services
         services.AddScoped<ITokenService, TokenService>();
+        services.AddSingleton<IContentTypeProvider, FileExtensionContentTypeProvider>();
     }
 }
