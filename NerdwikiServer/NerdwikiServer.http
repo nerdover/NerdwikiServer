@@ -1,0 +1,6 @@
+@NerdwikiServer_HostAddress = http://localhost:5216
+
+GET {{NerdwikiServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
