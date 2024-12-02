@@ -11,6 +11,7 @@ public static class AuthEndpoint
 {
     private record SignUpRequest(string Username, string Email, string Password);
     private record SignInRequest(string Username, string Password);
+    private record CreateRoleDto(string RoleName);
     private record CreateRoleClaimDto(string RoleName, string ClaimType, string ClaimValue);
     private record AssignRoleDto(string Username, string RoleName);
 
@@ -167,9 +168,9 @@ public static class AuthEndpoint
         return TypedResults.NoContent();
     }
 
-    private static async Task<IResult> AddRole(string value, RoleManager<IdentityRole> roleManager)
+    private static async Task<IResult> AddRole(CreateRoleDto dto, RoleManager<IdentityRole> roleManager)
     {
-        IdentityRole role = new(value);
+        IdentityRole role = new(dto.RoleName);
         var result = await roleManager.CreateAsync(role);
         if (!result.Succeeded)
             return TypedResults.Problem();
