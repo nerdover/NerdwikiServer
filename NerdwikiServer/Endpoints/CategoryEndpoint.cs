@@ -13,7 +13,7 @@ public static class CategoryEndpoint
     {
         var group = app.MapGroup("/api/categories").RequireAuthorization("AdminAccess");
 
-        group.MapGet("/", GetAllCategories);
+        group.MapGet("/", GetAllCategories).AllowAnonymous();
         group.MapGet("/{id}", GetCategory);
         group.MapPost("/", CreateCategory);
         group.MapPut("/{id}", UpdateCategory);

@@ -13,7 +13,7 @@ public static class TopicEndpoint
     {
         var group = app.MapGroup("/api/topics").RequireAuthorization("AdminAccess");
 
-        group.MapGet("/", GetAllTopics);
+        group.MapGet("/", GetAllTopics).AllowAnonymous();
         group.MapGet("/{id}", GetTopic);
         group.MapPost("/", CreateTopic);
         group.MapPut("/{id}", UpdateTopic);
