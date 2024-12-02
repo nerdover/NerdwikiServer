@@ -54,7 +54,8 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
 
             entity.HasOne(d => d.Topic).WithMany(p => p.Lessons)
                 .HasForeignKey(d => d.TopicId)
-                .HasConstraintName("FK_Lesson_ToTagId");
+                .HasConstraintName("FK_Lesson_ToTopic")
+                .OnDelete(DeleteBehavior.SetNull);
         });
 
         modelBuilder.Entity<LessonTag>(entity =>
@@ -91,7 +92,8 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
 
             entity.HasOne(d => d.Category).WithMany(p => p.Topics)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK_Topic_ToCategory");
+                .HasConstraintName("FK_Topic_ToCategory")
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -233,10 +233,11 @@ namespace NerdwikiServer.Migrations
                         principalTable: "Category",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Lesson_ToTagId",
+                        name: "FK_Lesson_ToTopic",
                         column: x => x.TopicId,
                         principalTable: "Topic",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(

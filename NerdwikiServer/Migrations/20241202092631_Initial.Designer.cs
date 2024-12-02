@@ -12,7 +12,7 @@ using NerdwikiServer.Data;
 namespace NerdwikiServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241127025624_Initial")]
+    [Migration("20241202092631_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -408,7 +408,8 @@ namespace NerdwikiServer.Migrations
                     b.HasOne("NerdwikiServer.Data.Entities.Topic", "Topic")
                         .WithMany("Lessons")
                         .HasForeignKey("TopicId")
-                        .HasConstraintName("FK_Lesson_ToTagId");
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK_Lesson_ToTopic");
 
                     b.Navigation("Category");
 

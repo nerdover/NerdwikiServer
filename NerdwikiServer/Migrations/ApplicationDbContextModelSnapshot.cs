@@ -405,7 +405,8 @@ namespace NerdwikiServer.Migrations
                     b.HasOne("NerdwikiServer.Data.Entities.Topic", "Topic")
                         .WithMany("Lessons")
                         .HasForeignKey("TopicId")
-                        .HasConstraintName("FK_Lesson_ToTagId");
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK_Lesson_ToTopic");
 
                     b.Navigation("Category");
 
