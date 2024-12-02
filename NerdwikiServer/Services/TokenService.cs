@@ -16,32 +16,15 @@ public class TokenService(IConfiguration configuration, UserManager<IdentityUser
 
     public async Task<string> GenerateAccessToken(IdentityUser user)
     {
-        List<Claim> claims =
-        [
+        var roles = await _userManager.GetRolesAsync(user);
+        var roleClaims = roles.Select(role => new Claim(ClaimTypes.Role, role));
+
+        var claims = new List<Claim>
+        {
             new(JwtRegisteredClaimNames.Sub, user.Id),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        ];
-
-        var roles = await _userManager.GetRolesAsync(user);
-        //var allRoleClaims = new HashSet<Claim>();
-
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-
-            //var foundRole = await _roleManager.FindByNameAsync(role);
-            //if (foundRole is null)
-            //{
-            //    continue;
-            //}
-            //var roleClaims = await _roleManager.GetClaimsAsync(foundRole);
-            //foreach (var claim in roleClaims)
-            //{
-            //    allRoleClaims.Add(claim);
-            //}
         }
-
-        //claims.AddRange(allRoleClaims);
+        .Union(roleClaims);
 
         var rawKey = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!);
         var key = new SymmetricSecurityKey(rawKey);
