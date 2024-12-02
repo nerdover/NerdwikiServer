@@ -22,6 +22,6 @@ public static partial class StringExtension
     [GeneratedRegex(@"\s+")]
     private static partial Regex MoreThanOneSpace();
 
-    [GeneratedRegex(@"[^A-Za-z0-9 ]")]
+    [GeneratedRegex(@"[^A-Za-z0-9\u0E00-\u0E7F ]")]
     private static partial Regex NotLetterNumberSpace();
 }
