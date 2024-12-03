@@ -22,5 +22,6 @@ app.MapCategoriesApi();
 app.MapTopicsApi();
 app.MapTagsApi();
 app.MapLessonsApi();
+app.MapUploadApi();
 
 app.Run();
