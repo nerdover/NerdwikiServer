@@ -87,7 +87,7 @@ public static class LessonEndpoint
                 TopicId = l.TopicId,
                 Topic = l.Topic
             })
-            .FirstOrDefaultAsync(l => l.Id == id);
+            .SingleOrDefaultAsync(l => l.Id == id);
         if (lesson is null)
             return TypedResults.NotFound($"Lesson with id '{id}' not found.");
         return TypedResults.Ok(lesson);
