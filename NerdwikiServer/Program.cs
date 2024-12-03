@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.Json;
 using NerdwikiServer;
 using NerdwikiServer.Endpoints;
 
@@ -5,6 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.RegisterCoreServices(builder.Configuration);
 builder.Services.AddOpenApi();
+
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
 var app = builder.Build();
 

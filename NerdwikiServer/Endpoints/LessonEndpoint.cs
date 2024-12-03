@@ -32,16 +32,62 @@ public static class LessonEndpoint
             var lessons = await context.Lessons
                 .AsNoTracking()
                 .Where(l => l.CategoryId == categoryId)
+                .Include(l => l.Category)
+                .Include(l => l.Topic)
+                .Select(l => new Lesson
+                {
+                    Id = l.Id,
+                    Title = l.Title,
+                    Description = l.Description,
+                    Cover = l.Cover,
+                    CategoryId = l.CategoryId,
+                    Category = l.Category,
+                    TopicId = l.TopicId,
+                    Topic = l.Topic
+                })
                 .ToListAsync();
             return TypedResults.Ok(lessons);
         }
 
-        return TypedResults.Ok(await context.Lessons.ToListAsync());
+        return TypedResults.Ok(await context.Lessons
+            .Include(l => l.Category)
+            .Include(l => l.Topic)
+            .Select(l => new Lesson
+            {
+                Id = l.Id,
+                Title = l.Title,
+                Description = l.Description,
+                Cover = l.Cover,
+                CreatedAt = l.CreatedAt,
+                UpdatedAt = l.UpdatedAt,
+                CategoryId = l.CategoryId,
+                Category = l.Category,
+                TopicId = l.TopicId,
+                Topic = l.Topic
+            })
+            .ToListAsync());
     }
 
     private static async Task<IResult> GetLesson(string id, ApplicationDbContext context)
     {
-        var lesson = await context.Lessons.FindAsync(id);
+        var lesson = await context.Lessons
+            .Include(l => l.Category)
+            .Include(l => l.Topic)
+            .Select(l => new Lesson
+            {
+                Id = l.Id,
+                Title = l.Title,
+                Description = l.Description,
+                Cover = l.Cover,
+                Content = l.Content,
+                CreatedAt = l.CreatedAt,
+                UpdatedAt = l.UpdatedAt,
+                CategoryId = l.CategoryId,
+                Category = l.Category,
+                TopicId = l.TopicId,
+                Topic = l.Topic
+            })
+            .FirstOrDefaultAsync(l => l.Id == id);
         if (lesson is null)
             return TypedResults.NotFound($"Lesson with id '{id}' not found.");
         return TypedResults.Ok(lesson);
