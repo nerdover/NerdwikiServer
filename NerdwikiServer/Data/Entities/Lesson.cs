@@ -14,6 +14,8 @@ public partial class Lesson
 
     public string? Description { get; set; }
 
+    public string? Cover { get; set; }
+
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }

@@ -44,6 +44,7 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
             entity.Property(e => e.CategoryId).HasMaxLength(50);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(255);
+            entity.Property(e => e.Cover).HasMaxLength(255);
             entity.Property(e => e.Title).HasMaxLength(50);
             entity.Property(e => e.TopicId).HasMaxLength(50);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
