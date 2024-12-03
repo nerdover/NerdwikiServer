@@ -40,8 +40,10 @@ public static class UploadEndpoint
             var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "FileStorage");
             var filePath = Path.Combine(uploadPath, fileName);
 
-            var fileStream = new FileStream(filePath, FileMode.Create);
-            await file.CopyToAsync(fileStream);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
 
             return TypedResults.Ok(fileName);
         }
