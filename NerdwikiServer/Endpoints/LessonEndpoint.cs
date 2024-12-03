@@ -7,8 +7,8 @@ namespace NerdwikiServer.Endpoints;
 
 public static class LessonEndpoint
 {
-    private record CreateLessonDto(string Id, string Title, string? Description, string? CategoryId, string? TopicId);
-    private record UpdateLessonDto(string Id, string Title, string? Description);
+    private record CreateLessonDto(string Id, string Title, string? Description, string? CategoryId, string? TopicId, string? Cover);
+    private record UpdateLessonDto(string Id, string Title, string? Description, string? Cover);
     private record UpdateContentDto(string Id, string Content);
 
     public static WebApplication MapLessonsApi(this WebApplication app)
@@ -69,6 +69,7 @@ public static class LessonEndpoint
                 Title = dto.Title.NormalizedName(),
                 Content = "",
                 Description = dto.Description,
+                Cover = dto.Cover,
                 CreatedAt = DateTime.Now
             };
 
@@ -124,6 +125,7 @@ public static class LessonEndpoint
         {
             lesson.Title = dto.Title.NormalizedName();
             lesson.Description = dto.Description;
+            lesson.Cover = dto.Cover;
             lesson.UpdatedAt = DateTime.Now;
 
             context.Lessons.Update(lesson);
