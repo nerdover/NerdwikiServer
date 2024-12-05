@@ -14,7 +14,7 @@ public static class TopicEndpoint
         var group = app.MapGroup("/api/topics").RequireAuthorization("AdminAccess");
 
         group.MapGet("/", GetAllTopics).AllowAnonymous();
-        group.MapGet("/{id}", GetTopic);
+        group.MapGet("/{id}", GetTopic).AllowAnonymous();
         group.MapPost("/", CreateTopic);
         group.MapPut("/{id}", UpdateTopic);
         group.MapDelete("/{id}", DeleteTopic);
